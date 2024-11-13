@@ -20,9 +20,9 @@ TAG = "tag"
 OUTPUTFILE = "logger/output.txt"
 LOOKUPTABLE = "logger/lookupTable.csv"
 
-# flowLogParser will read the file passed to it
-# and map each row to a tag based on a lookup table.
-# It then writes to an output file and summarizes counts associated with tag and with port/protocol combo
+# flowLogParser will read the file passed to it.
+# It maps each row to a tag based on a lookup table.
+# It summarizes counts associated with each tag and port/protocol combo, and writes the data to an output file
 def flowLogParser(filename):
 
     #these will track counts associated with tag and with port/protocol combo
