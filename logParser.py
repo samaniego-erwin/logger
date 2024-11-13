@@ -83,7 +83,7 @@ def getProtocol(protocolNum):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Reads a flow log data and map each row to a tag based on lookup table")
+    parser = argparse.ArgumentParser(description="Reads a flow log data and maps each row to a tag based on lookup table")
     parser.add_argument("-f", "--file", help="Path to the flow log file", required=True)
 
     try:
