@@ -46,7 +46,7 @@ OK
 ```
 
 
-Here is an example of a failed test. The `expected` value in the unit test was modified to generate a mismatch. 
+Here is an example if a failed test. The `expected` value in the unit test was modified to generate a mismatch. 
 ```
 er@ers-MacBook-Air-2 Python % python3 logger/test_logParser.py
 F.
