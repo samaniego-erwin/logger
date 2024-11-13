@@ -1,4 +1,5 @@
 import csv
+import argparse
 from collections import defaultdict
 from functools import cache
 
@@ -17,6 +18,7 @@ PROTOCOL = "protocol"
 TAG = "tag"
 
 OUTPUTFILE = "logger/output.txt"
+LOOKUPTABLE = "logger/lookupTable.csv"
 
 # flowLogParser will read the file passed to it
 # and map each row to a tag based on a lookup table.
@@ -61,8 +63,7 @@ def writeOutput(summary, header):
 # cache result from this function with @cache decorator
 @cache        
 def getTag(dstport, protocol):
-    #no hardcode
-    with open("logger/lookupTable.csv", "r") as file:
+    with open(LOOKUPTABLE, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
             if row[DST] == dstport and row[PROTOCOL].lower() == protocol.lower():
@@ -81,10 +82,19 @@ def getProtocol(protocolNum):
     return None
 
 
+def main():
+    parser = argparse.ArgumentParser(description="Reads a flow log data and map each row to a tag based on lookup table")
+    parser.add_argument("-f", "--file", help="Path to the flow log file", required=True)
+
+    try:
+        args = parser.parse_args()
+        flowLogParser(args.file)
+    except argparse.ArgumentError as e:
+        print(e)
+        parser.print_help()
+        exit(1)
+
+    
 if __name__ == '__main__':
-    #change this to args
-    flowLogParser("logger/flowLog.txt")
-    
-    
-    # flowLogParser("sampleText.txt")
+    main()
     
