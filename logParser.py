@@ -1,22 +1,20 @@
 import csv
-# import timeit
-# import time
 from collections import defaultdict
 from functools import cache
 
-
-#WRITE TEST
-
-
 # from https://docs.aws.amazon.com/vpc/latest/userguide/flow-log-records.html
 # dstport is in 6th column and protocol is in 7th (0-based index)
-PORT = 6
-PROTOCOL = 7
+PORTFIELD = 6
+PROTOCOLFIELD = 7
 
 # csv file from https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
 PROTOCOL_NUMBERS_MAP = "logger/protocol-numbers-1.csv"
 DECIMAL = "Decimal"
 KEYWORD = "Keyword"
+
+DST = "dstport"
+PROTOCOL = "protocol"
+TAG = "tag"
 
 OUTPUTFILE = "logger/output.txt"
 
@@ -34,8 +32,8 @@ def flowLogParser(filename):
         for line in file:
             fields = line.split()
             
-            dstport = fields[PORT]
-            protocol = getProtocol(fields[PROTOCOL])
+            dstport = fields[PORTFIELD]
+            protocol = getProtocol(fields[PROTOCOLFIELD])
             portAndProtocolCounts[dstport + "," + protocol] += 1
 
             tag = getTag(dstport, protocol)
@@ -44,27 +42,12 @@ def flowLogParser(filename):
             else:
                 tagCounts[tag] += 1
 
-    # write to output count of matches for each tag and for each port/protocol combo
+    # write count of matches for each tag and for each port/protocol combo to output
     writeOutput(tagCounts, "Tag Counts:\nTag,Count\n")
     writeOutput(portAndProtocolCounts, "Port/Protocol Combination Counts:\nPort, Protocol,Count\n")
     
-    # with open(OUTPUTFILE, "a") as file:
-    #     file.write("Tag Counts:\n")
-    #     file.write("Tag,Count\n")
-    #     keys = tagCounts.keys()
-    #     for key in keys:
-    #         file.write(key + "," + str(tagCounts[key]) + "\n")
-    #     file.write("\n\n")
 
-    #     file.write("Port/Protocol Combination Counts:\n")
-    #     file.write("Port, Protocol,Count\n")
-    #     keys = portAndProtocolCounts.keys()
-    #     for key in keys:
-    #         file.write(key + "," + str(portAndProtocolCounts[key]) + "\n")
-    #     file.write("\n\n")
-        
-
-
+# writeOutput appends new summary counts when program is executed
 def writeOutput(summary, header):   
     with open(OUTPUTFILE, "a") as file: 
         file.write(header)
@@ -74,22 +57,21 @@ def writeOutput(summary, header):
         file.write("\n\n")
         
 
-# add documenation
+# getTag returns tag associated with the dstport + protocol passed to this function
+# cache result from this function with @cache decorator
 @cache        
 def getTag(dstport, protocol):
     #no hardcode
     with open("logger/lookupTable.csv", "r") as file:
         reader = csv.DictReader(file)
-
-
         for row in reader:
-            #no hard code
-            #not case sensitive
-            if row["dstport"] == dstport and row["protocol"].lower() == protocol.lower():
-                return row["tag"]
+            if row[DST] == dstport and row[PROTOCOL].lower() == protocol.lower():
+                return row[TAG]
     return None
 
+
 # getProtocol takes in a number and returns the corresponding protocol keyword associated with it
+# If there is no match, None is returned
 def getProtocol(protocolNum):
     with open(PROTOCOL_NUMBERS_MAP, "r") as file:
         reader = csv.DictReader(file)
@@ -97,8 +79,6 @@ def getProtocol(protocolNum):
             if row[DECIMAL] == protocolNum:
                 return row[KEYWORD].lower()
     return None
-
-
 
 
 if __name__ == '__main__':
