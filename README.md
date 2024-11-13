@@ -31,7 +31,8 @@ options:
 
 
 ## TESTS
-`lookupTable_big.csv` was used to test large port-protocol-tag mappings. A comparison between cached and non-cached versions was performed using a timer. 
+`lookupTable_big.csv` was used to test large port-protocol-tag mappings. A comparison between cached and non-cached versions was performed using a timer.
+On average, the cached version finished in 0.04328775405883789 seconds, while the non-cached version took 0.496107816696167 seconds. The tests were executed 20 times.
 
 
 
