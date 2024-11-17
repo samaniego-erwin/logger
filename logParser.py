@@ -9,6 +9,7 @@ PORTFIELD = 6
 PROTOCOLFIELD = 7
 
 # csv file from https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+# This mapping file is used to determine the protocol keyword associated with a protocol number
 PROTOCOL_NUMBERS_MAP = "logger/protocol-numbers-1.csv"
 DECIMAL = "Decimal"
 KEYWORD = "Keyword"
@@ -17,8 +18,9 @@ DST = "dstport"
 PROTOCOL = "protocol"
 TAG = "tag"
 
-OUTPUTFILE = "logger/output.txt"
+# The lookup table `lookupTable.csv` is used to return a tag corresponding to the dstport and protocol inputs
 LOOKUPTABLE = "logger/lookupTable.csv"
+OUTPUTFILE = "logger/output.txt"
 
 # flowLogParser will read the file passed to it.
 # It maps each row to a tag based on a lookup table.

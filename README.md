@@ -5,7 +5,7 @@ summarizes counts associated with each tag and port/protocol combination, and wr
 
 This tool supports the default log format and only version 2. The following reference was used: [AWS Flow Log Records Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/flow-log-records.html).  
 
-The lookup table `lookupTable.csv` is based on the example provided. The protocol number mapping file, `protocol-numbers-1.csv`, is based on information from [IANA Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml) as referenced in the Flow Log Records documentation.
+Given a `dstport` and `protocol`, the lookup table `lookupTable.csv` returns a tag corresponding to those inputs. The lookup table is based on the example provided. The protocol number mapping file, `protocol-numbers-1.csv`, is based on information from the [IANA Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml), as referenced in the Flow Log Records documentation. This mapping file is used to determine the protocol keyword associated with a protocol number.
 
 The output is written to `output.txt`. If the file already exists, the output is appended.
 
